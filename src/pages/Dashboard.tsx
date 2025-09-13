@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  BarChart3, 
-  MousePointer, 
-  Users, 
-  TrendingUp, 
+import {
+  BarChart3,
+  MousePointer,
+  Users,
+  TrendingUp,
   Calendar,
   Filter,
   Download,
@@ -21,10 +21,10 @@ import {
   UserCheck,
   Globe,
   Brain,
-  Lightbulb,
-  AlertTriangle,
-  CheckCircle,
   TrendingDown,
+  Clock,
+  Percent,
+  LineChartIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { apiGetLatestReport } from "@/api/api";
@@ -41,9 +41,24 @@ const Dashboard = () => {
   // Mock personas data
   const personas = [
     { id: "all", name: "All Users", color: "analytics-blue", count: 8942 },
-    { id: "first-time", name: "First-time Visitors", color: "analytics-green", count: 3421 },
-    { id: "returning", name: "Returning Users", color: "analytics-orange", count: 4238 },
-    { id: "power-users", name: "Power Users", color: "analytics-purple", count: 1283 },
+    {
+      id: "first-time",
+      name: "First-time Visitors",
+      color: "analytics-green",
+      count: 3421,
+    },
+    {
+      id: "returning",
+      name: "Returning Users",
+      color: "analytics-orange",
+      count: 4238,
+    },
+    {
+      id: "power-users",
+      name: "Power Users",
+      color: "analytics-purple",
+      count: 1283,
+    },
   ];
 
   const reportQ = useQuery({
@@ -55,74 +70,32 @@ const Dashboard = () => {
   // Mock data for the dashboard
   const metrics = [
     {
-      title: "Sessions",
-      value: reportQ.data?.data.sessions,
+      title: "Unique Visitors",
+      value: reportQ.data?.data.uniqueVisitors,
       icon: Eye,
     },
     {
-      title: "Total Sessions",
-      value: reportQ.data?.data.totalSessions,
+      title: "Total Page Views",
+      value: reportQ.data?.data.totalPageViews,
       icon: Users,
     },
-  ];
-
-  const funnelData = [
-    { step: "Landing Page", visitors: 10000, conversion: 100 },
-    { step: "Product View", visitors: 7500, conversion: 75 },
-    { step: "Add to Cart", visitors: 3000, conversion: 30 },
-    { step: "Checkout", visitors: 1200, conversion: 12 },
-    { step: "Purchase", visitors: 340, conversion: 3.4 },
-  ];
-
-  const topPages = [
-    { page: "/", views: 5678, bounce: 45 },
-    { page: "/products", views: 4321, bounce: 38 },
-    { page: "/about", views: 2890, bounce: 52 },
-    { page: "/contact", views: 1567, bounce: 33 },
-    { page: "/pricing", views: 1234, bounce: 41 },
-  ];
-
-  // AI-generated insights based on the data
-  const aiInsights = [
     {
-      type: "critical",
-      icon: AlertTriangle,
-      title: "High Drop-off at Checkout",
-      description: "72% of users abandon during checkout. Consider simplifying the checkout process or adding trust signals.",
-      recommendation: "Add progress indicators and reduce form fields",
-      impact: "Could improve conversion by 15-20%",
-      color: "destructive"
+      title: "Average Session Time",
+      value: reportQ.data?.data.avgSessionTime,
+      icon: Clock,
     },
     {
-      type: "opportunity", 
-      icon: Lightbulb,
-      title: "Strong Mobile Engagement",
-      description: "Mobile users spend 40% more time on product pages. Your mobile UX is performing well.",
-      recommendation: "Consider mobile-first design for new features",
-      impact: "Mobile conversion rate: 4.2% vs 2.8% desktop",
-      color: "analytics-green"
+      title: "Conversion Rate",
+      value: reportQ.data?.data.conversionRate,
+      icon: Percent,
     },
-    {
-      type: "success",
-      icon: CheckCircle,
-      title: "CTA Performing Well",
-      description: "Your main CTA button has a 35% click-through rate, which is above industry average.",
-      recommendation: "Use similar design patterns on other pages",
-      impact: "Could boost overall conversion by 8-12%",
-      color: "analytics-blue"
-    },
-    {
-      type: "warning",
-      icon: TrendingDown,
-      title: "Returning User Decline",
-      description: "Returning user visits dropped 15% this week. Check for technical issues or content changes.",
-      recommendation: "Review recent site changes and user feedback",
-      impact: "Monitor closely to prevent further decline",
-      color: "analytics-orange"
-    }
   ];
 
-  const maxVisitors = Math.max(...funnelData.map(s => s.visitors));
+  const funnelData = reportQ.data?.data.conversionFunnel;
+
+  const topPages = reportQ.data?.data.topPages;
+
+  const maxVisitors = Math.max(...(funnelData?.map((s) => s.visitors) ?? [0]));
 
   return (
     <div className="min-h-screen bg-background">
@@ -131,10 +104,10 @@ const Dashboard = () => {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
                 className="hover:bg-primary"
               >
                 <Home className="w-4 h-4 mr-2" />
@@ -155,7 +128,9 @@ const Dashboard = () => {
                   <>
                     <div className="w-2 h-2 bg-analytics-orange rounded-full"></div>
                     <span className="text-xs font-medium">Free Plan</span>
-                    <span className="text-xs text-muted-foreground">({sessionsUsed}/100 sessions)</span>
+                    <span className="text-xs text-muted-foreground">
+                      ({sessionsUsed}/100 sessions)
+                    </span>
                   </>
                 ) : (
                   <>
@@ -167,7 +142,7 @@ const Dashboard = () => {
 
               <div className="flex items-center space-x-2">
                 <Calendar className="w-4 h-4 text-muted-foreground" />
-                <select 
+                <select
                   value={selectedTimeRange}
                   onChange={(e) => setSelectedTimeRange(e.target.value)}
                   className="bg-background border border-border rounded-md px-3 py-1 text-sm"
@@ -203,12 +178,12 @@ const Dashboard = () => {
 
               {/* Persona selector (only show in persona mode) */}
               {viewMode === "persona" && (
-                <select 
+                <select
                   value={selectedPersona}
                   onChange={(e) => setSelectedPersona(e.target.value)}
                   className="bg-background border border-border rounded-md px-3 py-1 text-sm"
                 >
-                  {personas.map(persona => (
+                  {personas.map((persona) => (
                     <option key={persona.id} value={persona.id}>
                       {persona.name} ({persona.count.toLocaleString()})
                     </option>
@@ -220,9 +195,14 @@ const Dashboard = () => {
                 <Filter className="w-4 h-4 mr-2" />
                 Filters
               </Button>
-              <Button variant="outline" size="sm" disabled={planType === "free"}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={planType === "free"}
+              >
                 <Download className="w-4 h-4 mr-2" />
-                Export {planType === "free" && <Lock className="w-3 h-3 ml-1" />}
+                Export{" "}
+                {planType === "free" && <Lock className="w-3 h-3 ml-1" />}
               </Button>
               <Button variant="outline" size="sm">
                 <Settings className="w-4 h-4" />
@@ -254,10 +234,12 @@ const Dashboard = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2">Analytics Dashboard</h1>
               <p className="text-muted-foreground">
-                {viewMode === "general" 
+                {viewMode === "general"
                   ? "Real-time insights into your website performance and user behavior"
-                  : `Insights for: ${personas.find(p => p.id === selectedPersona)?.name || "All Users"}`
-                }
+                  : `Insights for: ${
+                      personas.find((p) => p.id === selectedPersona)?.name ||
+                      "All Users"
+                    }`}
               </p>
             </div>
             {planType === "free" && (
@@ -267,9 +249,14 @@ const Dashboard = () => {
                     <Crown className="w-5 h-5 text-analytics-orange" />
                     <div>
                       <p className="font-medium text-sm">Upgrade to Premium</p>
-                      <p className="text-xs text-muted-foreground">Get unlimited sessions & history access</p>
+                      <p className="text-xs text-muted-foreground">
+                        Get unlimited sessions & history access
+                      </p>
                     </div>
-                    <Button size="sm" className="bg-analytics-orange hover:bg-analytics-orange/90 text-white">
+                    <Button
+                      size="sm"
+                      className="bg-analytics-orange hover:bg-analytics-orange/90 text-white"
+                    >
                       $19.99/mo
                     </Button>
                   </div>
@@ -279,19 +266,33 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <Card>
+            
+         </Card>  
+        </div>
+
         {/* Metrics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {metrics.map((metric, index) => (
-            <Card key={index} className="bg-gradient-card border-0 hover:shadow-hover transition-all duration-300">
+            <Card
+              key={index}
+              className="bg-gradient-card border-0 hover:shadow-hover transition-all duration-300"
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`w-10 h-10 rounded-lg bg-analytics-blue/10 flex items-center justify-center`}>
+                  <div
+                    className={`w-10 h-10 rounded-lg bg-analytics-blue/10 flex items-center justify-center`}
+                  >
                     <metric.icon className="w-5 h-5 text-analytics-blue" />
                   </div>
                 </div>
                 <div className="space-y-1">
                   <p className="text-2xl font-bold">{metric.value as any}</p>
-                  <p className="text-sm text-muted-foreground">{metric.title}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {metric.title}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -310,27 +311,35 @@ const Dashboard = () => {
                       <span>Click Heatmap</span>
                       {viewMode === "persona" && (
                         <Badge variant="secondary" className="ml-2">
-                          {personas.find(p => p.id === selectedPersona)?.name}
+                          {personas.find((p) => p.id === selectedPersona)?.name}
                         </Badge>
                       )}
                     </CardTitle>
-                    <Button variant="outline" size="sm" disabled={planType === "free"}>
-                      View Full {planType === "free" && <Lock className="w-3 h-3 ml-1" />}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={planType === "free"}
+                    >
+                      View Full{" "}
+                      {planType === "free" && <Lock className="w-3 h-3 ml-1" />}
                     </Button>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <div className="relative bg-gradient-to-br from-muted/30 to-muted/10 rounded-lg p-6 min-h-[350px]">
                     <div className="text-center mb-6">
-                      <h3 className="font-semibold mb-2">Homepage Interactions Map</h3>
+                      <h3 className="font-semibold mb-2">
+                        Homepage Interactions Map
+                      </h3>
                       <p className="text-sm text-muted-foreground">
-                        {viewMode === "persona" 
-                          ? `Click patterns for ${personas.find(p => p.id === selectedPersona)?.name?.toLowerCase()}`
-                          : "Click density over the last 7 days"
-                        }
+                        {viewMode === "persona"
+                          ? `Click patterns for ${personas
+                              .find((p) => p.id === selectedPersona)
+                              ?.name?.toLowerCase()}`
+                          : "Click density over the last 7 days"}
                       </p>
                     </div>
-                    
+
                     {/* Visual website mockup with heatmap overlay */}
                     <div className="relative bg-white rounded-lg border-2 border-dashed border-muted mx-auto max-w-md p-4">
                       {/* Header section */}
@@ -346,7 +355,7 @@ const Dashboard = () => {
                         <div className="absolute inset-0 bg-analytics-orange/30 rounded pulse-animation"></div>
                         <div className="absolute top-1 right-8 w-6 h-6 bg-red-500/60 rounded-full animate-pulse"></div>
                       </div>
-                      
+
                       {/* Hero section */}
                       <div className="relative bg-muted/30 rounded p-4 mb-3">
                         <div className="w-full h-2 bg-muted/70 rounded mb-2"></div>
@@ -355,7 +364,7 @@ const Dashboard = () => {
                         {/* Super hot spot */}
                         <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-red-500/70 rounded-full animate-pulse"></div>
                       </div>
-                      
+
                       {/* Content sections */}
                       <div className="space-y-2">
                         <div className="relative bg-muted/20 rounded p-2">
@@ -368,7 +377,7 @@ const Dashboard = () => {
                           <div className="w-1/2 h-1 bg-muted/60 rounded"></div>
                         </div>
                       </div>
-                      
+
                       {/* Footer */}
                       <div className="relative bg-muted/40 rounded p-2 mt-3">
                         <div className="flex justify-between">
@@ -382,19 +391,31 @@ const Dashboard = () => {
                     {/* Click statistics */}
                     <div className="mt-6 grid grid-cols-3 gap-4 text-center">
                       <div className="p-3 bg-card rounded-lg border">
-                        <div className="text-lg font-bold text-red-500">4,789</div>
-                        <div className="text-xs text-muted-foreground">CTA Clicks</div>
+                        <div className="text-lg font-bold text-red-500">
+                          4,789
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          CTA Clicks
+                        </div>
                       </div>
                       <div className="p-3 bg-card rounded-lg border">
-                        <div className="text-lg font-bold text-analytics-orange">2,456</div>
-                        <div className="text-xs text-muted-foreground">Nav Clicks</div>
+                        <div className="text-lg font-bold text-analytics-orange">
+                          2,456
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Nav Clicks
+                        </div>
                       </div>
                       <div className="p-3 bg-card rounded-lg border">
-                        <div className="text-lg font-bold text-analytics-teal">892</div>
-                        <div className="text-xs text-muted-foreground">Footer Clicks</div>
+                        <div className="text-lg font-bold text-analytics-teal">
+                          892
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Footer Clicks
+                        </div>
                       </div>
                     </div>
-                    
+
                     <div className="mt-4 pt-4 border-t">
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>Low Activity</span>
@@ -419,92 +440,113 @@ const Dashboard = () => {
                       <span>Conversion Funnel</span>
                       {viewMode === "persona" && (
                         <Badge variant="secondary" className="ml-2">
-                          {personas.find(p => p.id === selectedPersona)?.name}
+                          {personas.find((p) => p.id === selectedPersona)?.name}
                         </Badge>
                       )}
                     </CardTitle>
-                    <Button variant="outline" size="sm" disabled={planType === "free"}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={planType === "free"}
+                    >
                       <MoreHorizontal className="w-4 h-4" />
                       {planType === "free" && <Lock className="w-3 h-3 ml-1" />}
                     </Button>
                   </div>
                 </CardHeader>
-                    <CardContent>
-                        <div className="space-y-6">
-                            {funnelData.map((step, index) => {
-                            // Scale the bar proportionally to the largest value, but keep a minimum so tiny bars are visible
-                            const widthPct = Math.min(
-                                100,
-                                Math.max((step.visitors / maxVisitors) * 100, 8) // min 8%, never >100%
-                                // If you want by conversion instead, use: (step.conversion / maxConversion) * 100
-                            );
+                <CardContent>
+                  <div className="space-y-6">
+                    {funnelData?.map((step, index) => {
+                      // Scale the bar proportionally to the largest value, but keep a minimum so tiny bars are visible
+                      const widthPct = Math.min(
+                        100,
+                        Math.max((step.visitors / maxVisitors) * 100, 8) // min 8%, never >100%
+                        // If you want by conversion instead, use: (step.conversion / maxConversion) * 100
+                      );
 
-                            return (
-                                <div key={index} className="relative">
-                                <div className="flex items-center justify-between mb-3 min-w-0">
-                                    <span className="text-base font-medium truncate">{step.step}</span>
-                                    <div className="flex items-center gap-4 shrink-0">
-                                    <span className="text-sm text-muted-foreground whitespace-nowrap">
-                                        {step.visitors.toLocaleString()} visitors
-                                    </span>
-                                    <Badge
-                                        variant="secondary"
-                                        className="text-base font-semibold px-3 py-1 whitespace-nowrap"
-                                        title={`${step.conversion}%`}
-                                    >
-                                        {step.conversion}%
-                                    </Badge>
-                                    </div>
-                                </div>
+                      return (
+                        <div key={index} className="relative">
+                          <div className="flex items-center justify-between mb-3 min-w-0">
+                            <span className="text-base font-medium truncate">
+                              {step.step}
+                            </span>
+                            <div className="flex items-center gap-4 shrink-0">
+                              <span className="text-sm text-muted-foreground whitespace-nowrap">
+                                {step.visitors.toLocaleString()} visitors
+                              </span>
+                              <Badge
+                                variant="secondary"
+                                className="text-base font-semibold px-3 py-1 whitespace-nowrap"
+                                title={`${step.percent}%`}
+                              >
+                                {step.percent}
+                              </Badge>
+                            </div>
+                          </div>
 
-                                <div className="relative group">
-                                    <div className="w-full bg-muted rounded-full h-8 overflow-hidden">
-                                        <div
-                                        className="bg-gradient-to-r from-analytics-blue to-analytics-teal h-8 rounded-full transition-all duration-500 flex items-center justify-end pr-2 max-w-full"
-                                        style={{ width: `${widthPct}%` }}
-                                        >
-                                        <span className="text-white text-xs font-medium truncate">
-                                            {step.visitors.toLocaleString()}
-                                        </span>
-                                        </div>
-                                    </div>
+                          <div className="relative group">
+                            <div className="w-full bg-muted rounded-full h-8 overflow-hidden">
+                              <div
+                                className="bg-gradient-to-r from-analytics-blue to-analytics-teal h-8 rounded-full transition-all duration-500 flex items-center justify-end pr-2 max-w-full"
+                                style={{ width: `${widthPct}%` }}
+                              >
+                                <span className="text-white text-xs font-medium truncate">
+                                  {step.visitors.toLocaleString()}
+                                </span>
+                              </div>
+                            </div>
 
-                                    {/* Drop-off indicator: hidden until hover */}
-                                    {index < funnelData.length - 1 && (
-                                        <div className="absolute -bottom-6 right-0 text-sm text-muted-foreground bg-card px-2 py-1 rounded border 
-                                                        opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                                        -
-                                        {Math.round(
-                                            ((funnelData[index].visitors - funnelData[index + 1].visitors) /
-                                            funnelData[index].visitors) *
-                                            100
-                                        )}
-                                        % drop-off
-                                        </div>
-                                    )}
-                                    </div>
-                                </div>
-                            );
-                            })}
+                            {/* Drop-off indicator: hidden until hover */}
+                            {index < funnelData.length - 1 && (
+                              <div
+                                className="absolute -bottom-6 right-0 text-sm text-muted-foreground bg-card px-2 py-1 rounded border 
+                                                        opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                              >
+                                -
+                                {Math.round(
+                                  ((funnelData[index].visitors -
+                                    funnelData[index + 1].visitors) /
+                                    funnelData[index].visitors) *
+                                    100
+                                )}
+                                % drop-off
+                              </div>
+                            )}
+                          </div>
                         </div>
+                      );
+                    })}
+                  </div>
 
-                        {/* Funnel insights */}
-                        <div className="mt-8 pt-6 border-t">
-                            <div className="grid grid-cols-2 gap-4">
-                            <div className="text-center p-4 bg-muted/20 rounded-lg">
-                                <div className="text-2xl font-bold text-analytics-orange mb-1">72%</div>
-                                <div className="text-sm text-muted-foreground">Biggest Drop-off</div>
-                                <div className="text-xs text-muted-foreground mt-1">Checkout → Purchase</div>
-                            </div>
-                            <div className="text-center p-4 bg-muted/20 rounded-lg">
-                                <div className="text-2xl font-bold text-analytics-green mb-1">3.4%</div>
-                                <div className="text-sm text-muted-foreground">Overall Conversion</div>
-                                <div className="text-xs text-muted-foreground mt-1">Landing → Purchase</div>
-                            </div>
-                            </div>
+                  {/* Funnel insights */}
+                  <div className="mt-8 pt-6 border-t">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-4 bg-muted/20 rounded-lg">
+                        <div className="text-2xl font-bold text-analytics-orange mb-1">
+                          {funnelData?.[0].percent}
                         </div>
-                    </CardContent>
-                </Card>
+                        <div className="text-sm text-muted-foreground">
+                          Biggest Drop-off
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {funnelData?.[0].step} → {funnelData?.[1].step}
+                        </div>
+                      </div>
+                      <div className="text-center p-4 bg-muted/20 rounded-lg">
+                        <div className="text-2xl font-bold text-analytics-green mb-1">
+                          {funnelData?.[funnelData.length - 1].percent}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Overall Conversion
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          Landing → Purchase
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Top Pages */}
@@ -516,12 +558,15 @@ const Dashboard = () => {
                     <span>Top Performing Pages</span>
                     {viewMode === "persona" && (
                       <Badge variant="secondary" className="ml-2">
-                        {personas.find(p => p.id === selectedPersona)?.name}
+                        {personas.find((p) => p.id === selectedPersona)?.name}
                       </Badge>
                     )}
                   </CardTitle>
                   {planType === "free" && (
-                    <Badge variant="outline" className="text-analytics-orange border-analytics-orange">
+                    <Badge
+                      variant="outline"
+                      className="text-analytics-orange border-analytics-orange"
+                    >
                       <Lock className="w-3 h-3 mr-1" />
                       History locked
                     </Badge>
@@ -533,29 +578,56 @@ const Dashboard = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left p-3 font-medium text-muted-foreground">Page</th>
-                        <th className="text-right p-3 font-medium text-muted-foreground">Views</th>
-                        <th className="text-right p-3 font-medium text-muted-foreground">Bounce Rate</th>
-                        <th className="text-right p-3 font-medium text-muted-foreground">Trend</th>
+                        <th className="text-left p-3 font-medium text-muted-foreground">
+                          Page
+                        </th>
+                        <th className="text-right p-3 font-medium text-muted-foreground">
+                          Views
+                        </th>
+                        <th className="text-right p-3 font-medium text-muted-foreground">
+                          Bounce Rate
+                        </th>
+                        <th className="text-right p-3 font-medium text-muted-foreground">
+                          Trend
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {topPages.map((page, index) => (
-                        <tr key={index} className="border-b last:border-0 hover:bg-muted/20 transition-colors">
+                      {topPages?.map((page, index) => (
+                        <tr
+                          key={index}
+                          className="border-b last:border-0 hover:bg-muted/20 transition-colors"
+                        >
                           <td className="p-3">
-                            <code className="text-sm bg-muted px-2 py-1 rounded">{page.page}</code>
+                            <code className="text-sm bg-muted px-2 py-1 rounded">
+                              {page.page}
+                            </code>
                           </td>
                           <td className="p-3 text-right font-medium">
                             {page.views.toLocaleString()}
                           </td>
                           <td className="p-3 text-right">
-                            <Badge variant={page.bounce > 50 ? "destructive" : "secondary"}>
-                              {page.bounce}%
+                            <Badge
+                              variant={
+                                parseInt(page.bounceRate) > 50
+                                  ? "destructive"
+                                  : "secondary"
+                              }
+                            >
+                              {page.bounceRate}
                             </Badge>
                           </td>
-                          <td className="p-3 text-right">
+                          <td className="p-3 flex justify-end">
                             <div className="w-12 h-6 bg-analytics-blue/20 rounded flex items-center justify-center">
-                              <TrendingUp className="w-4 h-4 text-analytics-blue" />
+                              {page.trend === "up" && (
+                                <TrendingUp className="w-4 h-4 text-analytics-green" />
+                              )}
+                              {page.trend === "down" && (
+                                <TrendingDown className="w-4 h-4 text-analytics-blue" />
+                              )}
+                              {page.trend === "flat" && (
+                                <LineChartIcon className="w-4 h-4 text-analytics-orange" />
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -578,22 +650,34 @@ const Dashboard = () => {
                     <Crown className="w-4 h-4 text-analytics-orange ml-2" />
                   )}
                 </CardTitle>
-                {planType === "free" && (
-                  <p className="text-xs text-muted-foreground">
-                    Upgrade to Premium for AI-powered insights and recommendations
-                  </p>
-                )}
               </CardHeader>
               <CardContent className="space-y-4">
+                {reportQ.data?.data.recommendations.map(
+                  (recommendation, index) => (
+                    <div key={index} className="p-4 bg-card rounded-lg border">
+                      <p className="text-xs text-muted-foreground">
+                        {recommendation}
+                      </p>
+                    </div>
+                  )
+                )}
+              </CardContent>
+              {/* <CardContent className="space-y-4">
                 {planType === "premium" ? (
                   aiInsights.map((insight, index) => (
                     <div key={index} className="p-4 bg-card rounded-lg border">
                       <div className="flex items-start space-x-3">
-                        <div className={`w-8 h-8 rounded-lg bg-${insight.color}/10 flex items-center justify-center flex-shrink-0`}>
-                          <insight.icon className={`w-4 h-4 text-${insight.color}`} />
+                        <div
+                          className={`w-8 h-8 rounded-lg bg-${insight.color}/10 flex items-center justify-center flex-shrink-0`}
+                        >
+                          <insight.icon
+                            className={`w-4 h-4 text-${insight.color}`}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm mb-2">{insight.title}</h4>
+                          <h4 className="font-semibold text-sm mb-2">
+                            {insight.title}
+                          </h4>
                           <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
                             {insight.description}
                           </p>
@@ -619,17 +703,22 @@ const Dashboard = () => {
                 ) : (
                   <div className="p-6 text-center bg-muted/20 rounded-lg border-2 border-dashed">
                     <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <h4 className="font-semibold text-sm mb-2">AI Insights Locked</h4>
+                    <h4 className="font-semibold text-sm mb-2">
+                      AI Insights Locked
+                    </h4>
                     <p className="text-xs text-muted-foreground mb-4">
                       Get personalized recommendations and insights with Premium
                     </p>
-                    <Button size="sm" className="bg-analytics-orange hover:bg-analytics-orange/90 text-white">
+                    <Button
+                      size="sm"
+                      className="bg-analytics-orange hover:bg-analytics-orange/90 text-white"
+                    >
                       <Crown className="w-3 h-3 mr-1" />
                       Upgrade to Premium
                     </Button>
                   </div>
                 )}
-              </CardContent>
+              </CardContent> */}
             </Card>
 
             {/* Quick Actions */}
@@ -638,16 +727,29 @@ const Dashboard = () => {
                 <CardTitle className="text-base">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" size="sm" className="w-full justify-start" disabled={planType === "free"}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start"
+                  disabled={planType === "free"}
+                >
                   <Download className="w-4 h-4 mr-2" />
                   Export Report
                   {planType === "free" && <Lock className="w-3 h-3 ml-auto" />}
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start"
+                >
                   <Settings className="w-4 h-4 mr-2" />
                   Configure Tracking
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start"
+                >
                   <Filter className="w-4 h-4 mr-2" />
                   Create Custom Filter
                 </Button>

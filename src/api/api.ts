@@ -20,20 +20,33 @@ export interface Event {
 export interface ReportRecord {
   id: string;
   data: {
-    totalSessions: number;
-    sessions: Array<{
-      id: string;
-      anonymousId: string;
-      metadata?: unknown;
-      totalEvents: number;
-      eventsByType: Record<string, number>;
-    }>;
+    summary: string;
+    personas: {
+      persona: string;
+      behavior: string;
+      sessions: number;
+    }[];
+    topPages: {
+      page: string;
+      trend: string; // could be "up" | "down" | "flat"
+      views: number;
+      bounceRate: string;
+    }[];
+    avgSessionTime: string;
+    conversionRate: string;
+    totalPageViews: number;
+    uniqueVisitors: number;
+    recommendations: string[];
+    conversionFunnel: {
+      step: string;
+      percent: string;
+      visitors: number;
+    }[];
   };
   createdAt?: string;
 }
 
-const BASE =
-  (import.meta.env.VITE_API_URL as string);
+const BASE = import.meta.env.VITE_API_URL as string;
 
 export async function apiGetLatestReport(): Promise<ReportRecord> {
   const res = await fetch(`${BASE}/api/report`, {
