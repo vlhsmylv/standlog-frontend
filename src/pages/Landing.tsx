@@ -13,8 +13,10 @@ import {
   Target,
   ArrowRight,
   Play,
+  Check,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -69,6 +71,20 @@ const Landing = () => {
     { number: "1B+", label: "User Interactions" },
     { number: "99.9%", label: "Uptime" },
   ];
+
+  const [copied, setCopied] = useState(false);
+  const scriptUrl = "https://hackathon-cdn.opencnt.com/dist/script.min.js";
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(scriptUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // reset after 2s
+    } catch (e) {
+      console.error("Failed to copy", e);
+    }
+  }
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -223,18 +239,27 @@ const Landing = () => {
                       Copy & Paste Installation
                     </h3>
                     <p className="text-muted-foreground mb-6">
-                      Just add this script to your website and you're ready to
-                      go. No complex configuration needed.
+                      Just add this script to your website and you're ready to go. 
+                      No complex configuration needed.
                     </p>
                     <div className="bg-card rounded-lg p-4 border font-mono text-sm mb-6">
                       <code className="text-primary">
-                        {`<script src="https://cdn.StandLog.com/v1/tracking.js" 
-        data-site-id="your-site-id"></script>`}
+                        {`${scriptUrl}`}
                       </code>
                     </div>
-                    <Button className="bg-primary hover:bg-primary/90">
-                      Get Your Script
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button
+                      onClick={handleCopy}
+                      className="bg-primary hover:bg-primary/90"
+                    >
+                      {copied ? (
+                        <>
+                          Copied! <Check className="w-4 h-4 ml-2" />
+                        </>
+                      ) : (
+                        <>
+                          Copy Link <ArrowRight className="w-4 h-4 ml-2" />
+                        </>
+                      )}
                     </Button>
                   </div>
                   <div className="bg-card rounded-lg p-6 border">
