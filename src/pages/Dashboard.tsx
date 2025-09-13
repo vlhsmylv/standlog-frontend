@@ -29,6 +29,8 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { apiGetLatestReport } from "@/api/api";
+import { useQuery } from "@tanstack/react-query";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -247,6 +249,21 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="p-6">
         <div className="mb-8">
+          <div className="p-6 pt-4">
+            <Card className="border-analytics-blue/30">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-analytics-blue" />
+                  Latest Report (from API)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {/** TanStack Query hook inline */}
+                <ReportViewer />
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-2">Analytics Dashboard</h1>
@@ -663,5 +680,44 @@ const Dashboard = () => {
     </div>
   );
 };
+
+function ReportViewer() {
+  const { data, isLoading, isFetching, isError, error, refetch } = useQuery({
+    queryKey: ["latestReport"],
+    queryFn: apiGetLatestReport,
+    refetchOnWindowFocus: false,
+  });
+
+  return (
+    <>
+      <div className="flex items-center gap-2">
+        <Button size="sm" onClick={() => refetch()} disabled={isFetching}>
+          {isFetching ? "Refreshing..." : "Refresh"}
+        </Button>
+        <span className="text-xs text-muted-foreground">
+          Endpoint: <code>/api/session/report</code>
+        </span>
+      </div>
+
+      {isLoading ? (
+        <div className="rounded-lg border bg-card p-3">
+          <pre className="text-xs m-0">Loading…</pre>
+        </div>
+      ) : isError ? (
+        <div className="rounded-lg border bg-card p-3">
+          <pre className="text-xs m-0 text-red-500">
+            Error: {(error as Error).message}
+          </pre>
+        </div>
+      ) : (
+        <div className="rounded-lg border bg-card p-3 max-h-96 overflow-auto">
+          <pre className="text-xs whitespace-pre-wrap break-words m-0">
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </div>
+      )}
+    </>
+  );
+}
 
 export default Dashboard;
