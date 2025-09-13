@@ -42,14 +42,14 @@ All colors MUST be HSL.
   --color-analytics-green: hsl(140 60% 50%);
 
   /* Gradients */
-  --color-gradient-hero: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(175 60% 50%) 100%);
-  --color-gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(215 15% 98%) 100%);
-  --color-gradient-data: linear-gradient(90deg, hsl(210 100% 45% / 0.1) 0%, hsl(175 60% 50% / 0.1) 100%);
+  --gradient-hero: linear-gradient(135deg, hsl(210 100% 45%) 0%, hsl(175 60% 50%) 100%);
+  --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(215 15% 98%) 100%);
+  --gradient-data: linear-gradient(90deg, hsl(210 100% 45% / 0.1) 0%, hsl(175 60% 50% / 0.1) 100%);
 
   /* Shadows */
-  --color-shadow-card: 0 4px 6px -1px hsl(215 25% 15% / 0.1), 0 2px 4px -1px hsl(215 25% 15% / 0.06);
-  --color-shadow-hover: 0 10px 15px -3px hsl(215 25% 15% / 0.1), 0 4px 6px -2px hsl(215 25% 15% / 0.05);
-  --color-shadow-glow: 0 0 20px hsl(210 100% 45% / 0.3);
+  --drop-shadow-card: 0 4px 6px -1px hsl(215 25% 15% / 0.1), 0 2px 4px -1px hsl(215 25% 15% / 0.06);
+  --drop-shadow-hover: 0 10px 15px -3px hsl(215 25% 15% / 0.1), 0 4px 6px -2px hsl(215 25% 15% / 0.05);
+  --drop-shadow-glow: 0 0 20px hsl(210 100% 45% / 0.3);
 
   /* Transitions */
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

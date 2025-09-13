@@ -70,7 +70,7 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-linear(135deg, hsl(210 100% 45%) 0%, hsl(175 60% 50%) 100%) rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold">InsightFlow</span>
@@ -114,7 +114,7 @@ const Landing = () => {
             <Button 
               size="lg" 
               onClick={() => navigate('/dashboard')}
-              className="bg-gradient-hero text-white hover:shadow-glow transition-all duration-300"
+              className="bg-primary text-white hover:shadow-glow transition-all duration-300"
             >
               <Play className="w-5 h-5 mr-2" />
               View Live Demo
@@ -174,7 +174,7 @@ const Landing = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-gradient-data border-0">
+            <Card className="bg-muted border-0">
               <CardContent className="p-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                   <div>
@@ -234,7 +234,7 @@ const Landing = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Free Plan */}
-            <Card className="bg-gradient-card border-0 relative">
+            <Card className="bg-muted border-0 relative">
               <CardContent className="p-8">
                 <div className="text-center mb-6">
                   <h3 className="text-2xl font-bold mb-2">Free</h3>
@@ -288,7 +288,7 @@ const Landing = () => {
             </Card>
 
             {/* Premium Plan */}
-            <Card className="bg-gradient-hero text-white border-0 relative transform scale-105">
+            <Card className="bg-primary text-white border-0 relative transform scale-105">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <Badge className="bg-analytics-orange text-white">Most Popular</Badge>
               </div>
@@ -363,7 +363,7 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-hero text-white">
+      <section className="py-20 px-4 bg-gradient-to-r from-analytics-blue to-analytics-teal text-white">
         <div className="container mx-auto text-center">
           <h2 className="text-4xl font-bold mb-4">Ready to Understand Your Users?</h2>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
@@ -379,7 +379,7 @@ const Landing = () => {
               <TrendingUp className="w-5 h-5 mr-2" />
               Try Live Demo
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 hover:text-black bg-primary">
               Start Free Trial
             </Button>
           </div>
@@ -391,7 +391,7 @@ const Landing = () => {
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold">InsightFlow</span>
