@@ -14,6 +14,7 @@ export default defineConfig({
   preview: {
     allowedHosts: [
       "hackathon.opencnt.com",
+      "hackathon-api.opencnt.com/api",
       "proto-client-ufzk9t-f2bd53-213-199-34-59.traefik.me",
     ],
   },

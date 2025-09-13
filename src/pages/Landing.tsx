@@ -77,10 +77,10 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-linear(135deg, hsl(210 100% 45%) 0%, hsl(175 60% 50%) 100%) rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-analytics-blue to-analytics-teal rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">InsightFlow</span>
+              <span className="text-xl font-bold">StandLog</span>
             </div>
             <nav className="hidden md:flex items-center space-x-8">
               <a
@@ -228,7 +228,7 @@ const Landing = () => {
                     </p>
                     <div className="bg-card rounded-lg p-4 border font-mono text-sm mb-6">
                       <code className="text-primary">
-                        {`<script src="https://cdn.insightflow.com/v1/tracking.js" 
+                        {`<script src="https://cdn.StandLog.com/v1/tracking.js" 
         data-site-id="your-site-id"></script>`}
                       </code>
                     </div>
@@ -427,7 +427,7 @@ const Landing = () => {
             Ready to Understand Your Users?
           </h2>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            Join thousands of businesses already using InsightFlow to optimize
+            Join thousands of businesses already using StandLog to optimize
             their websites and boost conversions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -459,10 +459,10 @@ const Landing = () => {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">InsightFlow</span>
+              <span className="text-xl font-bold">StandLog</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              © 2024 InsightFlow. Built for the hackathon.
+              © 2024 StandLog. Built for the hackathon.
             </div>
           </div>
         </div>
