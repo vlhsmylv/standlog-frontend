@@ -67,9 +67,9 @@ const Landing = () => {
   ];
 
   const stats = [
-    { number: "50K+", label: "Websites Tracked" },
-    { number: "1B+", label: "User Interactions" },
-    { number: "99.9%", label: "Uptime" },
+    { number: "$5.9M+", label: "SOM" },
+    { number: "$2.9B+", label: "Market Valuation" },
+    { number: "60%", label: "Accessible TAM" },
   ];
 
   const [copied, setCopied] = useState(false);
@@ -327,7 +327,7 @@ const Landing = () => {
                     <div className="w-5 h-5 bg-analytics-green rounded-full flex items-center justify-center">
                       <span className="text-white text-xs">✓</span>
                     </div>
-                    <span>100 sessions per month</span>
+                    <span>500 sessions per month</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-5 h-5 bg-analytics-green rounded-full flex items-center justify-center">
@@ -468,7 +468,7 @@ const Landing = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white/10"
+              className="border-white bg-primary text-white hover:bg-white/10"
             >
               Start Free Trial
             </Button>
