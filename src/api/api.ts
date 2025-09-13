@@ -33,7 +33,7 @@ export interface ReportRecord {
 }
 
 const BASE =
-  (import.meta.env.VITE_API_URL as string) ?? "http://localhost:3000";
+  (import.meta.env.VITE_API_URL as string);
 
 export async function apiGetLatestReport(): Promise<ReportRecord> {
   const res = await fetch(`${BASE}/api/report`, {
