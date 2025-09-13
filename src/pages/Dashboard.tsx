@@ -15,8 +15,6 @@ import {
   Target,
   Zap,
   Eye,
-  ArrowUp,
-  ArrowDown,
   MoreHorizontal,
   Crown,
   Lock,
@@ -48,35 +46,23 @@ const Dashboard = () => {
     { id: "power-users", name: "Power Users", color: "analytics-purple", count: 1283 },
   ];
 
+  const reportQ = useQuery({
+    queryKey: ["latestReport"],
+    queryFn: apiGetLatestReport,
+    refetchOnWindowFocus: false,
+  });
+
   // Mock data for the dashboard
   const metrics = [
     {
-      title: "Total Page Views",
-      value: "24,567",
-      change: "+12.5%",
-      trend: "up",
+      title: "Sessions",
+      value: reportQ.data?.data.sessions,
       icon: Eye,
     },
     {
-      title: "Unique Visitors",
-      value: "8,942",
-      change: "+8.2%",
-      trend: "up",
+      title: "Total Sessions",
+      value: reportQ.data?.data.totalSessions,
       icon: Users,
-    },
-    {
-      title: "Conversion Rate",
-      value: "3.4%",
-      change: "-0.5%",
-      trend: "down",
-      icon: Target,
-    },
-    {
-      title: "Avg. Session Time",
-      value: "2m 34s",
-      change: "+15.3%",
-      trend: "up",
-      icon: TrendingUp,
     },
   ];
 
@@ -162,7 +148,7 @@ const Dashboard = () => {
                 <span className="text-xl font-bold">StandLog</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="md:flex items-center space-x-4 hidden">
               {/* Plan indicator */}
               <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-lg">
                 {planType === "free" ? (
@@ -264,7 +250,7 @@ const Dashboard = () => {
             </Card>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex md:flex-row flex-col items-center justify-between space-y-3.">
             <div>
               <h1 className="text-3xl font-bold mb-2">Analytics Dashboard</h1>
               <p className="text-muted-foreground">
@@ -302,16 +288,9 @@ const Dashboard = () => {
                   <div className={`w-10 h-10 rounded-lg bg-analytics-blue/10 flex items-center justify-center`}>
                     <metric.icon className="w-5 h-5 text-analytics-blue" />
                   </div>
-                  <Badge 
-                    variant={metric.trend === "up" ? "default" : "destructive"}
-                    className="text-xs"
-                  >
-                    {metric.trend === "up" ? <ArrowUp className="w-3 h-3 mr-1" /> : <ArrowDown className="w-3 h-3 mr-1" />}
-                    {metric.change}
-                  </Badge>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-2xl font-bold">{metric.value}</p>
+                  <p className="text-2xl font-bold">{metric.value as any}</p>
                   <p className="text-sm text-muted-foreground">{metric.title}</p>
                 </div>
               </CardContent>
