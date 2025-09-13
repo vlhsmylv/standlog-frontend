@@ -149,7 +149,7 @@ const Dashboard = () => {
                 variant="ghost" 
                 size="sm"
                 onClick={() => navigate('/')}
-                className="hover:bg-muted"
+                className="hover:bg-primary"
               >
                 <Home className="w-4 h-4 mr-2" />
                 Back to Home
@@ -695,7 +695,7 @@ function ReportViewer() {
           {isFetching ? "Refreshing..." : "Refresh"}
         </Button>
         <span className="text-xs text-muted-foreground">
-          Endpoint: <code>/api/session/report</code>
+          Endpoint: <code>/api/report</code>
         </span>
       </div>
 

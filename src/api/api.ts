@@ -36,7 +36,7 @@ const BASE =
   (import.meta.env.VITE_API_URL as string) ?? "http://localhost:3000";
 
 export async function apiGetLatestReport(): Promise<ReportRecord> {
-  const res = await fetch(`${BASE}/api/session/report`, {
+  const res = await fetch(`${BASE}/api/report`, {
     headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) {
@@ -55,7 +55,7 @@ export async function apiCreateSession({
   anonymousId: string;
   metadata?: JSONObject | null;
 }): Promise<Session> {
-  const res = await fetch(`${BASE}/api/session`, {
+  const res = await fetch(`${BASE}/api`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ anonymousId, metadata }),
