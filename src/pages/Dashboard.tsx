@@ -695,7 +695,7 @@ function ReportViewer() {
           {isFetching ? "Refreshing..." : "Refresh"}
         </Button>
         <span className="text-xs text-muted-foreground">
-          Endpoint: <code>/api/session/report</code>
+          Endpoint: <code>/api/report</code>
         </span>
       </div>
 
