@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,6 +12,9 @@ export default defineConfig({
     },
   },
   preview: {
-    allowedHosts: ['hackathon.opencnt.com'],
+    allowedHosts: [
+      "hackathon.opencnt.com",
+      "proto-client-ufzk9t-f2bd53-213-199-34-59.traefik.me",
+    ],
   },
-})
+});
