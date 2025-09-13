@@ -10,7 +10,6 @@ import { Toaster } from 'sonner';
 const queryClient = new QueryClient();
 
 function App() {
-
   return (
     <>
       <QueryClientProvider client={queryClient}>
@@ -23,8 +22,8 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
-          <Toaster richColors position="bottom-right" />
         </TooltipProvider>
+        <Toaster richColors position="bottom-right" />
       </QueryClientProvider>
     </>
   )

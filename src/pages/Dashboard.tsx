@@ -134,6 +134,8 @@ const Dashboard = () => {
     }
   ];
 
+  const maxVisitors = Math.max(...funnelData.map(s => s.visitors));
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -431,63 +433,82 @@ const Dashboard = () => {
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {funnelData.map((step, index) => (
-                      <div key={index} className="relative">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-base font-medium">{step.step}</span>
-                          <div className="flex items-center space-x-6">
-                            <span className="text-sm text-muted-foreground">
-                              {step.visitors.toLocaleString()} visitors
-                            </span>
-                            <Badge variant="secondary" className="text-base font-semibold px-3 py-1">
-                              {step.conversion}%
-                            </Badge>
-                          </div>
+                    <CardContent>
+                        <div className="space-y-6">
+                            {funnelData.map((step, index) => {
+                            // Scale the bar proportionally to the largest value, but keep a minimum so tiny bars are visible
+                            const widthPct = Math.min(
+                                100,
+                                Math.max((step.visitors / maxVisitors) * 100, 8) // min 8%, never >100%
+                                // If you want by conversion instead, use: (step.conversion / maxConversion) * 100
+                            );
+
+                            return (
+                                <div key={index} className="relative">
+                                <div className="flex items-center justify-between mb-3 min-w-0">
+                                    <span className="text-base font-medium truncate">{step.step}</span>
+                                    <div className="flex items-center gap-4 shrink-0">
+                                    <span className="text-sm text-muted-foreground whitespace-nowrap">
+                                        {step.visitors.toLocaleString()} visitors
+                                    </span>
+                                    <Badge
+                                        variant="secondary"
+                                        className="text-base font-semibold px-3 py-1 whitespace-nowrap"
+                                        title={`${step.conversion}%`}
+                                    >
+                                        {step.conversion}%
+                                    </Badge>
+                                    </div>
+                                </div>
+
+                                <div className="relative group">
+                                    <div className="w-full bg-muted rounded-full h-8 overflow-hidden">
+                                        <div
+                                        className="bg-gradient-to-r from-analytics-blue to-analytics-teal h-8 rounded-full transition-all duration-500 flex items-center justify-end pr-2 max-w-full"
+                                        style={{ width: `${widthPct}%` }}
+                                        >
+                                        <span className="text-white text-xs font-medium truncate">
+                                            {step.visitors.toLocaleString()}
+                                        </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Drop-off indicator: hidden until hover */}
+                                    {index < funnelData.length - 1 && (
+                                        <div className="absolute -bottom-6 right-0 text-sm text-muted-foreground bg-card px-2 py-1 rounded border 
+                                                        opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                                        -
+                                        {Math.round(
+                                            ((funnelData[index].visitors - funnelData[index + 1].visitors) /
+                                            funnelData[index].visitors) *
+                                            100
+                                        )}
+                                        % drop-off
+                                        </div>
+                                    )}
+                                    </div>
+                                </div>
+                            );
+                            })}
                         </div>
-                        
-                        {/* Enhanced funnel bar matching the reference */}
-                        <div className="relative">
-                          <div className="w-full bg-muted/30 rounded-full h-8">
-                            <div 
-                              className="bg-gradient-to-r from-analytics-blue to-analytics-teal h-8 rounded-full transition-all duration-500 flex items-center justify-end pr-4"
-                              style={{ width: `${Math.max(step.conversion * 2.5, 8)}%` }}
-                            >
-                              <span className="text-white text-xs font-medium">
-                                {step.visitors.toLocaleString()}
-                              </span>
+
+                        {/* Funnel insights */}
+                        <div className="mt-8 pt-6 border-t">
+                            <div className="grid grid-cols-2 gap-4">
+                            <div className="text-center p-4 bg-muted/20 rounded-lg">
+                                <div className="text-2xl font-bold text-analytics-orange mb-1">72%</div>
+                                <div className="text-sm text-muted-foreground">Biggest Drop-off</div>
+                                <div className="text-xs text-muted-foreground mt-1">Checkout → Purchase</div>
                             </div>
-                          </div>
-                          
-                          {/* Drop-off indicator */}
-                          {index < funnelData.length - 1 && (
-                            <div className="absolute -bottom-6 right-0 text-sm text-muted-foreground bg-card px-2 py-1 rounded border">
-                              -{Math.round(((funnelData[index].visitors - funnelData[index + 1].visitors) / funnelData[index].visitors) * 100)}% drop-off
+                            <div className="text-center p-4 bg-muted/20 rounded-lg">
+                                <div className="text-2xl font-bold text-analytics-green mb-1">3.4%</div>
+                                <div className="text-sm text-muted-foreground">Overall Conversion</div>
+                                <div className="text-xs text-muted-foreground mt-1">Landing → Purchase</div>
                             </div>
-                          )}
+                            </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* Funnel insights */}
-                  <div className="mt-8 pt-6 border-t">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="text-center p-4 bg-muted/20 rounded-lg">
-                        <div className="text-2xl font-bold text-analytics-orange mb-1">72%</div>
-                        <div className="text-sm text-muted-foreground">Biggest Drop-off</div>
-                        <div className="text-xs text-muted-foreground mt-1">Checkout → Purchase</div>
-                      </div>
-                      <div className="text-center p-4 bg-muted/20 rounded-lg">
-                        <div className="text-2xl font-bold text-analytics-green mb-1">3.4%</div>
-                        <div className="text-sm text-muted-foreground">Overall Conversion</div>
-                        <div className="text-xs text-muted-foreground mt-1">Landing → Purchase</div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                </Card>
             </div>
 
             {/* Top Pages */}
