@@ -650,7 +650,7 @@ const Dashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {reportQ.data?.data.recommendations.map(
+                {reportQ.data?.data?.recommendations.map(
                   (recommendation, index) => (
                     <div key={index} className="p-4 bg-card rounded-lg border">
                       <p className="text-xs text-muted-foreground">
