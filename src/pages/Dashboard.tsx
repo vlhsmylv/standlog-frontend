@@ -71,29 +71,29 @@ const Dashboard = () => {
   const metrics = [
     {
       title: "Unique Visitors",
-      value: reportQ.data?.data.uniqueVisitors,
+      value: reportQ.data?.data?.uniqueVisitors,
       icon: Eye,
     },
     {
       title: "Total Page Views",
-      value: reportQ.data?.data.totalPageViews,
+      value: reportQ.data?.data?.totalPageViews,
       icon: Users,
     },
     {
       title: "Average Session Time",
-      value: reportQ.data?.data.avgSessionTime,
+      value: reportQ.data?.data?.avgSessionTime,
       icon: Clock,
     },
     {
       title: "Conversion Rate",
-      value: reportQ.data?.data.conversionRate,
+      value: reportQ.data?.data?.conversionRate,
       icon: Percent,
     },
   ];
 
-  const funnelData = reportQ.data?.data.conversionFunnel;
+  const funnelData = reportQ.data?.data?.conversionFunnel;
 
-  const topPages = reportQ.data?.data.topPages;
+  const topPages = reportQ.data?.data?.topPages;
 
   const maxVisitors = Math.max(...(funnelData?.map((s) => s.visitors) ?? [0]));
 
